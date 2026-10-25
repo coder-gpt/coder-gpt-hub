@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Roblox Studio Script</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#111827;color:#fff;margin:0;display:flex;justify-content:center;padding:24px}
+  .card{max-width:420px;width:100%;background:#1f2937;border-radius:16px;padding:24px;text-align:center}
+  h1{font-size:22px;margin-top:0}
+  a.btn,button{display:block;width:100%;box-sizing:border-box;padding:14px;margin:12px 0;border:none;border-radius:10px;font-size:16px;font-weight:bold;text-decoration:none;color:#fff;cursor:pointer}
+  #sub{background:#ff0000} #like{background:#3b82f6}
+  #get{background:#22c55e;display:none}
+  .done{opacity:.5}
+  small{color:#9ca3af}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Get My Roblox Studio Script</h1>
+  <p>Complete both steps to unlock it.</p>
+
+  <a id="sub" class="btn" href="https://www.youtube.com/@YOUR_HANDLE?sub_confirmation=1" target="_blank" rel="noopener">1. Subscribe on YouTube</a>
+  <a id="like" class="btn" href="https://www.youtube.com/watch?v=VIDEO_ID" target="_blank" rel="noopener">2. Like the video</a>
+
+  <a id="get" class="btn" href="#" target="_blank" rel="noopener">Open Script (expires in 2 min)</a>
+  <p id="msg"><small>Tap both buttons above.</small></p>
+</div>
+
+<!-- ===== PASTE YOUR SCRIPT BELOW THIS LINE ===== -->
+<script type="text/plain" id="payload">
+print("Hello from my Roblox script!")
+-- paste your full script here
+</script>
+<!-- ===== PASTE YOUR SCRIPT ABOVE THIS LINE ===== -->
+
+<script>
+  const EXPIRE_MINUTES = 2;
+  let sub = false, like = false, made = false;
+
+  function check(){
+    if(!(sub && like) || made) return;
+    made = true;
+
+    const text = document.getElementById('payload').textContent.trim();
+    const blob = new Blob([text], {type:'text/plain'});
+    const url = URL.createObjectURL(blob);
+
+    const get = document.getElementById('get');
+    const msg = document.getElementById('msg');
+    get.href = url;
+    get.style.display = 'block';
+    msg.style.display = 'none';
+
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      get.style.display = 'none';
+      msg.innerHTML = '<small>Link expired. Refresh to try again.</small>';
+      msg.style.display = 'block';
+    }, EXPIRE_MINUTES * 60 * 1000);
+  }
+
+  document.getElementById('sub').addEventListener('click', e => {
+    sub = true; e.currentTarget.classList.add('done'); check();
+  });
+  document.getElementById('like').addEventListener('click', e => {
+    like = true; e.currentTarget.classList.add('done'); check();
+  });
+</script>
+</body>
+</html>
